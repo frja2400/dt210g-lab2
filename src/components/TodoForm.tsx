@@ -57,9 +57,7 @@ function TodoForm({ onAddTodo }: TodoFormProps) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Lägg till ny To Do</h2>
-
+        <form onSubmit={handleSubmit} className="todo-form">
             <div>
                 <label htmlFor="title">Titel:</label>
                 <input
@@ -67,6 +65,7 @@ function TodoForm({ onAddTodo }: TodoFormProps) {
                     type="text"
                     value={title}
                     onChange={handleTitleChange}    // När användaren skriver i titelfältet, uppdatera state
+                    className="form-input"
                 />
                 {errors.title && <span>{errors.title}</span>}
             </div>
@@ -78,11 +77,12 @@ function TodoForm({ onAddTodo }: TodoFormProps) {
                     value={description}
                     onChange={handleDescriptionChange}
                     rows={3}
+                    className="form-textarea"
                 />
                 {errors.description && <span>{errors.description}</span>}
             </div>
 
-            <button type="submit">Lägg till</button>
+            <button type="submit" className="submit-btn">LÄGG TILL</button>
         </form>
     );
 }

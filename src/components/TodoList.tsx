@@ -11,7 +11,7 @@ interface TodoListProps {
 // Funktionen som representerar TodoList-komponenten
 function TodoList({ todos, onUpdateStatus, onDeleteTodo }: TodoListProps) {
     if (todos.length === 0) {
-        return <p>Inga uppgifter ännu. Lägg till din första!</p>;
+        return <p className="empty-message">Inga uppgifter ännu. Lägg till din första!</p>;
     }
 
     // Sortera todos efter status
@@ -26,7 +26,7 @@ function TodoList({ todos, onUpdateStatus, onDeleteTodo }: TodoListProps) {
 
     return (
         // Rendera varje todo med TodoItem-komponenten
-        <div>
+        <div className="todo-list">
             <h2>Mina To Dos ({todos.length})</h2>
             {sortedTodos.map((todo) => (
                 <TodoItem

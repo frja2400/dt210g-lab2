@@ -75,14 +75,16 @@ function App() {
     }
   };
 
-  if (loading) return <div>Laddar...</div>;
+  if (loading) return <div className="loading">Laddar...</div>;
 
   return (
     // Huvudstrukturen för appen med rubrik, felmeddelanden, formulär för att lägga till todo och listan av todos
     <div className="app">
-      <h1>Min To Do-lista</h1>
+      <div className="pin-bl"></div>
+      <div className="pin-br"></div>
+      <h1>Lägg till To Dos</h1>
 
-      {error && <div>{error}</div>}
+      {error && <div className="error-message">{error}</div>}
 
       <TodoForm onAddTodo={handleAddTodo} />
       <TodoList

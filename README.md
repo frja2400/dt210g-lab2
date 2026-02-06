@@ -1,73 +1,94 @@
-# React + TypeScript + Vite
+# Todo Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Detta repository innehåller en frontend-applikation för att hantera todos, byggd med React, TypeScript och Vite. Applikationen kommunicerar med ett REST API och erbjuder full CRUD-funktionalitet med validering och sortering.
 
-Currently, two official plugins are available:
+## Länk
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Applikationen finns tillgänglig på följande URL: **http://159.223.216.135**
 
-## React Compiler
+## Installation
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+För att installera och köra lokalt:
 
-## Expanding the ESLint configuration
+* `git clone https://github.com/frja2400/dt210g-lab2.git`
+* `cd dt210g-lab2`
+* `npm install`
+* Starta utvecklingsservern: `npm run dev`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Funktioner
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+* **Skapa todos** - Lägg till nya uppgifter med titel och beskrivning
+* **Uppdatera status** - Ändra status mellan "Ej påbörjad", "Pågående" och "Avklarad"
+* **Radera todos** - Ta bort uppgifter
+* **Automatisk sortering** - Todos sorteras efter status (Pågående → Ej påbörjad → Avklarad)
+* **Validering** - Titel måste vara minst 3 tecken, beskrivning max 200 tecken
+* **Felhantering** - Visar felmeddelanden vid API-problem
+* **Laddningsstatus** - Indikerar när data hämtas
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Projektstruktur
+```
+src/
+├── components/
+│   ├── TodoForm.tsx        # Formulär för att lägga till todos
+│   ├── TodoItem.tsx        # Visar en enskild todo
+│   └── TodoList.tsx        # Listar alla todos
+├── interfaces/
+│   └── TodoInterface.ts    # TypeScript-typer
+├── services/
+│   └── todoApi.ts          # API-kommunikation
+├── App.tsx                 # Huvudkomponent
+├── App.css                 # Styling
+└── main.tsx                # Applikationens startpunkt
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Datamodell
+```typescript
+export type TodoStatus = "Ej påbörjad" | "Pågående" | "Avklarad";
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+export interface Todo {
+  id: number;
+  title: string;
+  description?: string;
+  status: TodoStatus;
+}
 ```
+
+## API-kommunikation
+
+Applikationen kommunicerar med ett REST API via följande funktioner:
+
+| Funktion | Metod | Ändpunkt | Beskrivning |
+|----------|-------|----------|-------------|
+| `getTodos()` | GET | `/api/todo` | Hämtar alla todos |
+| `createTodo()` | POST | `/api/todo` | Skapar ny todo |
+| `updateTodo()` | PUT | `/api/todo/:id` | Uppdaterar todo |
+| `deleteTodo()` | DELETE | `/api/todo/:id` | Raderar todo |
+
+### API-konfiguration
+
+API-URL:en är definierad i `src/services/todoApi.ts`:
+```typescript
+const API_URL = "http://159.223.216.135/api/todo";
+```
+
+## Validering
+
+Formuläret validerar input innan det skickas till API:et:
+
+* **Titel:** Minst 3 tecken (obligatorisk)
+* **Beskrivning:** Max 200 tecken (valfri)
+
+Valideringsfel visas direkt i formuläret och försvinner när användaren börjar skriva.
+
+## Bygga för produktion
+```bash
+npm run build
+```
+
+Detta skapar en optimerad produktionsversion i `dist/`-mappen som kan publiceras till en webbserver.
+
+## Backend
+
+Denna frontend är byggd för att fungera med Todo API:
+**https://github.com/frja2400/TodoAPI**
